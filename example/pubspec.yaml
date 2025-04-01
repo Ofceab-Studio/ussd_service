@@ -18,8 +18,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  permission_handler: ^8.1.6
-  sim_data: ^0.0.2
+  permission_handler: ^11.4.0
   ussd_service:
     # When depending on this package from a real application you should use:
     #   ussd_service: ^x.y.z

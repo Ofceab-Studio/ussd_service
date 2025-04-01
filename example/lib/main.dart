@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:sim_data/sim_data.dart';
 import 'package:ussd_service/ussd_service.dart';
 
 void main() => runApp(const MyApp());
@@ -38,9 +37,7 @@ class _MyAppState extends State<MyApp> {
         throw Exception("permission missing");
       }
 
-      SimData simData = await SimDataPlugin.getSimData();
-      responseMessage = await UssdService.makeRequest(
-          simData.cards.first.subscriptionId, _requestCode);
+      responseMessage = await UssdService.makeRequest(0, _requestCode);
       setState(() {
         _requestState = RequestState.success;
         _responseMessage = responseMessage;
@@ -48,7 +45,7 @@ class _MyAppState extends State<MyApp> {
     } on PlatformException catch (e) {
       setState(() {
         _requestState = RequestState.error;
-        _responseCode = e is PlatformException ? e.code : "";
+        _responseCode = e.code;
         _responseMessage = e.message ?? '';
       });
     }
@@ -89,8 +86,8 @@ class _MyAppState extends State<MyApp> {
                 ),
                 const SizedBox(height: 20),
                 if (_requestState == RequestState.ongoing)
-                  Row(
-                    children: const <Widget>[
+                  const Row(
+                    children: <Widget>[
                       SizedBox(
                         width: 24,
                         height: 24,
